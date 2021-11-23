@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;com.aguasra.backend.apirest.models.entity.Measurers&apos; to &apos;Measurer&apos;&#x0D;&#x0A;- Original project: &apos;agua-sra-backend-apirest&apos;&#x0D;&#x0A;- Original element: &apos;com.aguasra.backend.apirest.models.entity.Measurers&apos;&#x0D;&#x0A;- Renamed element: &apos;com.aguasra.backend.apirest.models.entity.Measurer&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;Measurers&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.aguasra.backend.apirest.models.entity{Measurers.java[Measurers" matchStrategy="1" name="Measurer" qualified="false" references="true" similarDeclarations="false" stamp="1601436540321" textual="false" version="1.0"/>
+</session>
