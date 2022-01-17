@@ -37,7 +37,6 @@ public class User implements Serializable {
 	@Column(nullable = false, length = 60)
 	private String passwordUser;
 
-	@NotEmpty
 	@Column(nullable = false, length = 1)
 	private String stateUser;
 

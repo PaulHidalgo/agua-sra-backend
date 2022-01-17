@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.aguasra.backend.apirest.models.entity.Role;
 import com.aguasra.backend.apirest.models.service.ICrudService;
+import com.aguasra.backend.util.TypeErrorResponse;
 
 /**
  * @author PHidalgo
@@ -38,8 +39,20 @@ public class RoleRestController {
 
 	@Secured({ "ROLE_ADMIN", "ROLE_PRESIDENT" })
 	@GetMapping("/roles")
-	public List<Role> index() {
-		return roleService.findAll();
+	public ResponseEntity<?> index() {
+		Map<String, Object> response = new HashMap<String, Object>();
+		List<Role> roles=null;
+		try {
+			roles = roleService.findAll();
+		} catch (DataAccessException e) {
+			response.put("code", TypeErrorResponse.ERROR_DATABASE_READ.getValue());
+			response.put("message", TypeErrorResponse.ERROR_DATABASE_READ);
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		response.put("code", TypeErrorResponse.CORRECT_RESPONSE.getValue());
+		response.put("content", roles);
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 
 	@Secured("ROLE_ADMIN")
@@ -52,48 +65,53 @@ public class RoleRestController {
 		try {
 			role = roleService.findbyId(id);
 		} catch (DataAccessException e) {
-			response.put("mensaje", " Error al consultar en la base de datos");
+			response.put("code", TypeErrorResponse.ERROR_DATABASE_READ.getValue());
+			response.put("message", TypeErrorResponse.ERROR_DATABASE_READ);
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 
 		if (role == null) {
-			response.put("mensaje", "El role ID: ".concat(id.toString().concat(" no existe en la base de datos")));
+			response.put("code", TypeErrorResponse.ERROR_DATABASE_READ.getValue());
+			response.put("message", "El role ID: ".concat(id.toString().concat(" no existe en la base de datos")));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<Role>(role, HttpStatus.OK);
+		response.put("code", TypeErrorResponse.CORRECT_RESPONSE.getValue());
+		response.put("content", role);
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
-
-	@Secured("ROLE_ADMIN")
-	@PostMapping("roles")
-	public ResponseEntity<?> create(@Valid @RequestBody Role role, BindingResult result) {
+	
+	
+	@Secured({ "ROLE_ADMIN", "ROLE_PRESIDENT" })
+	@PostMapping("/roles/crear")
+	public ResponseEntity<?> create_role(@Valid @RequestBody Role role, BindingResult result) {
 		Role roleNew = null;
 		Map<String, Object> response = new HashMap<String, Object>();
-
 		if (result.hasErrors()) {
 			/*
 			 * Before Java 8 List<String> errors = new ArrayList<>(); for (FieldError err :
 			 * result.getFieldErrors()) { errors.add("EL campo '" + err.getField() + "' " +
 			 * err.getDefaultMessage()); }
 			 */
-
+	
 			List<String> errors = result.getFieldErrors().stream()
 					.map(err -> "EL campo '" + err.getField() + "' " + err.getDefaultMessage())
 					.collect(Collectors.toList());
-
+	
 			response.put("errors", errors);
-
+	
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
 		}
-
 		try {
 			roleNew = roleService.save(role);
 		} catch (DataAccessException e) {
-			response.put("mensaje", " Error al insertar en la base de datos");
+			response.put("code", TypeErrorResponse.ERROR_DATABASE_CREATE.getValue());
+			response.put("message", TypeErrorResponse.ERROR_DATABASE_CREATE);
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-
+	
+		response.put("code", TypeErrorResponse.CORRECT_RESPONSE.getValue());
 		response.put("mensaje", " El role ha sido creado con éxito!");
 		response.put("role", roleNew);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
@@ -125,7 +143,8 @@ public class RoleRestController {
 		}
 
 		if (roleActual == null) {
-			response.put("mensaje", "Error: no se pudo editar, el role ID: "
+			response.put("code", TypeErrorResponse.ERROR_DATABASE_READ.getValue());
+			response.put("message", "Error: no se pudo editar, el role ID: "
 					.concat(id.toString().concat(" no existe en la base de datos")));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
@@ -137,11 +156,13 @@ public class RoleRestController {
 
 			roleUpdated = roleService.save(roleActual);
 		} catch (DataAccessException e) {
-			response.put("mensaje", " Error al actualizar en la base de datos");
+			response.put("code", TypeErrorResponse.ERROR_DATABASE_UPDATE.getValue());
+			response.put("message", TypeErrorResponse.ERROR_DATABASE_UPDATE.getValue());
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		response.put("mensaje", " El role ha sido actualizado con éxito!");
+		response.put("code", TypeErrorResponse.CORRECT_RESPONSE.getValue());
+		response.put("message", " El role ha sido actualizado con éxito!");
 		response.put("role", roleUpdated);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 
@@ -155,12 +176,13 @@ public class RoleRestController {
 		try {
 			roleService.delete(id);
 		} catch (DataAccessException e) {
-			response.put("mensaje", " Error al eliminar en la base de datos");
+			response.put("code", TypeErrorResponse.ERROR_DATABASE_DELETE.getValue());
+			response.put("message", TypeErrorResponse.ERROR_DATABASE_DELETE);
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-
-		response.put("mensaje", " El role ha sido eliminado con éxito!");
+		response.put("code", TypeErrorResponse.CORRECT_RESPONSE.getValue());
+		response.put("message", " El role ha sido eliminado con éxito!");
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 
 	}
