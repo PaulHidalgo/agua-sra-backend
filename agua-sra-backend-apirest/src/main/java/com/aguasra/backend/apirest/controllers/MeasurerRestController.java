@@ -7,14 +7,12 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aguasra.backend.apirest.models.entity.Role;
+import com.aguasra.backend.apirest.models.entity.Measurer;
 
 /**
  * @author PHidalgo
@@ -22,41 +20,42 @@ import com.aguasra.backend.apirest.models.entity.Role;
  */
 @RestController
 @RequestMapping("/api")
-public class RoleRestController extends CrudControllerAbstract<Role>{
+public class MeasurerRestController extends CrudControllerAbstract<Measurer> {
 
+	
 	@Secured({ "ROLE_ADMIN", "ROLE_PRESIDENT" })
-	@GetMapping("/roles")
+	@GetMapping("/medidores")
 	@Override
 	public ResponseEntity<?> findAll() {
 		return super.findAll();
 	}
 
-	@Secured("ROLE_ADMIN")
-	@GetMapping("/roles/{id}")
-	@Override
-	public ResponseEntity<?> findbyId(@PathVariable Long id) {
-		return super.findbyId(id);
-	}
-	
-	
 	@Secured({ "ROLE_ADMIN", "ROLE_PRESIDENT" })
-	@PostMapping("/roles/create")
+	@PostMapping("/medidores/create")
 	@Override
-	public ResponseEntity<?> save(@Valid Role entity, BindingResult result) {
+	public ResponseEntity<?> save(@Valid Measurer entity, BindingResult result) {
 		return super.save(entity, result);
 	}
-
+	
 	@Secured("ROLE_ADMIN")
-	@PutMapping("/roles/{id}")
+	@PutMapping("/medidores/{id}")
 	@Override
-	public ResponseEntity<?> update(@Valid Role entity, BindingResult result, Long id) {
+	public ResponseEntity<?> update(@Valid Measurer entity, BindingResult result, Long id) {
 		return super.update(entity, result, id);
 	}
 
 	@Secured("ROLE_ADMIN")
-	@DeleteMapping("/roles/{id}")
+	@GetMapping("/medidores/{id}")
+	@Override
+	public ResponseEntity<?> findbyId(Long id) {
+		return super.findbyId(id);
+	}
+
+	@Secured("ROLE_ADMIN")
+	@DeleteMapping("/medidores/{id}")
 	@Override
 	public ResponseEntity<?> delete(Long id) {
 		return super.delete(id);
-	}
+	}	
+
 }

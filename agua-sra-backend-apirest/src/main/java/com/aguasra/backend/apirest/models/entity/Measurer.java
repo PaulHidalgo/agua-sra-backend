@@ -3,7 +3,6 @@ package com.aguasra.backend.apirest.models.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,7 +40,8 @@ public class Measurer implements Serializable {
 	@Column(nullable = false, length = 1)
 	private String stateMeasurer;
 
-	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	//@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	private Partner partner;
 
 	@Temporal(TemporalType.DATE)

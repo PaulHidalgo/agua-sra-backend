@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +32,7 @@ import com.aguasra.backend.util.TypeErrorResponse;
  */
 @RestController
 @RequestMapping("/api")
-public class UserRestController {
+public class UserRestController extends CrudControllerAbstract<User>{
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -41,11 +42,19 @@ public class UserRestController {
 	
 	@Secured({ "ROLE_ADMIN", "ROLE_PRESIDENT" })
 	@GetMapping("/users")
-	public List<User> index() {
-		return userService.findAll();
+	@Override
+	public ResponseEntity<?> findAll() {
+		return super.findAll();
 	}
 	
-	@Secured("ROLE_ADMIN")
+	@Secured({ "ROLE_ADMIN", "ROLE_PRESIDENT" })
+	@PostMapping("/users/create")
+	@Override
+	public ResponseEntity<?> save(@Valid @RequestBody User entity, BindingResult result) {
+		return super.save(entity, result);
+	}
+	
+	@Secured({ "ROLE_ADMIN", "ROLE_PRESIDENT" })
 	@PutMapping("/users/change_password/{userId}/{oldPassword}")
 	public ResponseEntity<?> updatePassword(@Valid @RequestBody User user, BindingResult result, @PathVariable Long userId, @PathVariable String oldPassword) {
 

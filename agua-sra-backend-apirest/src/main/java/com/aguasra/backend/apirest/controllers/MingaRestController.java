@@ -10,53 +10,48 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aguasra.backend.apirest.models.entity.Role;
+import com.aguasra.backend.apirest.models.entity.Minga;
 
-/**
- * @author PHidalgo
- *
- */
 @RestController
 @RequestMapping("/api")
-public class RoleRestController extends CrudControllerAbstract<Role>{
-
+public class MingaRestController extends CrudControllerAbstract<Minga>{
+	
 	@Secured({ "ROLE_ADMIN", "ROLE_PRESIDENT" })
-	@GetMapping("/roles")
+	@GetMapping("/mingas")
 	@Override
 	public ResponseEntity<?> findAll() {
 		return super.findAll();
 	}
-
+	
 	@Secured("ROLE_ADMIN")
-	@GetMapping("/roles/{id}")
+	@GetMapping("/mingas/{id}")
 	@Override
 	public ResponseEntity<?> findbyId(@PathVariable Long id) {
 		return super.findbyId(id);
 	}
 	
-	
 	@Secured({ "ROLE_ADMIN", "ROLE_PRESIDENT" })
-	@PostMapping("/roles/create")
+	@PostMapping("/mingas/create")
 	@Override
-	public ResponseEntity<?> save(@Valid Role entity, BindingResult result) {
+	public ResponseEntity<?> save(@Valid @RequestBody Minga entity, BindingResult result) {
 		return super.save(entity, result);
 	}
-
-	@Secured("ROLE_ADMIN")
-	@PutMapping("/roles/{id}")
+	
+	@Secured({ "ROLE_ADMIN", "ROLE_PRESIDENT" })
+	@PutMapping("/mingas/{id}")
 	@Override
-	public ResponseEntity<?> update(@Valid Role entity, BindingResult result, Long id) {
+	public ResponseEntity<?> update(@Valid @RequestBody Minga entity, BindingResult result, @PathVariable Long id) {
 		return super.update(entity, result, id);
 	}
-
+	
 	@Secured("ROLE_ADMIN")
-	@DeleteMapping("/roles/{id}")
+	@DeleteMapping("/mingas/{id}")
 	@Override
-	public ResponseEntity<?> delete(Long id) {
+	public ResponseEntity<?> delete(@PathVariable Long id) {
 		return super.delete(id);
 	}
 }

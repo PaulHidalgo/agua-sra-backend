@@ -27,11 +27,11 @@ public class Parameter implements Serializable {
 	private Long codParameter;
 
 	@NotEmpty
-	@Column(nullable = false, length = 20)
+	@Column(nullable = false, length = 50)
 	private String nameParameter;
 
 	@NotEmpty
-	@Column(nullable = false, length = 100)
+	@Column(nullable = false, length = 300)
 	private String descriptionParameter;
 
 	@NotEmpty

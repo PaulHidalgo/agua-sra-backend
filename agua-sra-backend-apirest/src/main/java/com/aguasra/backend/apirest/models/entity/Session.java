@@ -12,8 +12,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 /**
  * @author PHidalgo
@@ -27,22 +25,18 @@ public class Session implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codSession;
 	
-	@NotNull
+	@Column
 	private Date dateSession;
 	
-	@NotEmpty
 	@Column(nullable = false, length = 20)
 	private String typeSession;
 	
-	@NotEmpty
 	@Column(nullable = false, length = 15)
 	private Long feeSession;
 	
-	@NotEmpty
 	@Column(nullable = false, length = 500)
 	private String descriptionSession;
 	
-	@NotEmpty
 	@Column(nullable = false, length = 1)
 	private String stateSession;
 

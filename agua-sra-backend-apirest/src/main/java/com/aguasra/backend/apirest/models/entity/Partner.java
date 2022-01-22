@@ -3,7 +3,6 @@ package com.aguasra.backend.apirest.models.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,7 +14,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotEmpty;
 
 /**
  * @author PHidalgo
@@ -29,43 +27,35 @@ public class Partner implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codPartner;
 
-	@NotEmpty
 	@Column(nullable = false, length = 60)
 	private String namePartner;
 
-	@NotEmpty
 	@Column(nullable = false, length = 60)
 	private String lastnamePartner;
 
-	@NotEmpty
 	@Column(nullable = false, length = 15)
 	private String dniPartner;
 
-	@NotEmpty
 	@Column(nullable = false, length = 4)
 	private Integer numberPartner;
 
-	@NotEmpty
 	@Column(nullable = false, length = 2)
 	private Integer applePartner;
 
-	@NotEmpty
 	@Column(nullable = false, length = 2)
 	private Integer lotPartner;
 
-	@NotEmpty
 	@Column(nullable = false, length = 10)
 	private Integer phone1Partner;
 
-	@NotEmpty
 	@Column(nullable = false, length = 10)
 	private Integer phone2Partner;
 
-	@NotEmpty
 	@Column(nullable = false, length = 1)
 	private String statePartner;
 
-	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	//@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	private User user;
 
 	@Temporal(TemporalType.DATE)

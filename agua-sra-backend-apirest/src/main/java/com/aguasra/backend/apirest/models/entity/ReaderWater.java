@@ -3,7 +3,6 @@ package com.aguasra.backend.apirest.models.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,8 +14,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 /**
  * @author PHidalgo
@@ -25,28 +22,28 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "readersWater")
 public class ReaderWater implements Serializable {
+	
+	public ReaderWater() {
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codReader;
 
-	@NotNull
+	@Column
 	private Date dateReader;
 
-	@NotEmpty
 	@Column(nullable = false, length = 15)
 	private Long consumeReader;
 
-	@NotEmpty
 	@Column(nullable = false, length = 15)
 	private Long previousReader;
 
-	@NotEmpty
 	@Column(nullable = false, length = 15)
 	private Long actualReader;
-
-	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Partner partner;
+	
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+ 	private Measurer measurer;
 
 	@Temporal(TemporalType.DATE)
 	private Date dateCreateReader;
@@ -96,20 +93,20 @@ public class ReaderWater implements Serializable {
 		this.actualReader = actualReader;
 	}
 
-	public Partner getPartner() {
-		return partner;
-	}
-
-	public void setPartner(Partner partner) {
-		this.partner = partner;
-	}
-
 	public Date getDateCreateReader() {
 		return dateCreateReader;
 	}
 
 	public void setDateCreateReader(Date dateCreateReader) {
 		this.dateCreateReader = dateCreateReader;
+	}
+
+	public Measurer getMeasurer() {
+		return measurer;
+	}
+
+	public void setMeasurer(Measurer measurer) {
+		this.measurer = measurer;
 	}
 
 	/**

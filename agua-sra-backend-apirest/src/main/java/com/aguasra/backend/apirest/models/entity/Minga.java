@@ -12,8 +12,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 /**
  * @author PHidalgo
@@ -22,23 +20,23 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "mingas")
 public class Minga implements Serializable {
+	
+	public Minga() {
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codMinga;
 
-	@NotNull
+	@Temporal(TemporalType.DATE)
 	private Date dateMinga;
 
-	@NotEmpty
 	@Column(nullable = false, length = 15)
 	private Long feeMinga;
 
-	@NotEmpty
 	@Column(nullable = false, length = 500)
 	private String descriptionMinga;
 
-	@NotEmpty
 	@Column(nullable = false, length = 1)
 	private String stateMinga;
 
