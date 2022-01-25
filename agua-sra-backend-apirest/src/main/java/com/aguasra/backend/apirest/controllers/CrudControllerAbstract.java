@@ -71,7 +71,7 @@ public abstract class CrudControllerAbstract<T> implements ICrudController<T>{
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public ResponseEntity<?> update(@Valid @RequestBody T entity, BindingResult result, @PathVariable Long id){
+	public ResponseEntity<?> update(@Valid T entity, BindingResult result, @PathVariable Long id){
 
 		T entityActual = crudService.findbyId(id);
 		T entityUpdated = null;

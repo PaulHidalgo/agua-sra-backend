@@ -78,14 +78,14 @@ public class UserRestController extends CrudControllerAbstract<User>{
 		}
 
 		if (userActual == null) {
-			response.put("mensaje", "Error, no se encuentra resultados!!");
+			response.put("message", "Error, no se encuentra resultados!!");
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 	
 		boolean isPasswordMatches = passwordEncoder.matches(oldPassword,userActual.getPasswordUser());
 		
 		if(!isPasswordMatches) {
-			response.put("mensaje", "Error, No coincide la contraseña antigua");
+			response.put("message", "Error, No coincide la contraseña antigua");
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
@@ -96,13 +96,13 @@ public class UserRestController extends CrudControllerAbstract<User>{
 			userService.save(userActual);
 		
 		} catch (DataAccessException e) {
-			response.put("mensaje", " Error al actualizar en  base de datos");
+			response.put("message", " Error al actualizar en  base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
 		response.put("code", TypeErrorResponse.CORRECT_RESPONSE.getValue());
-		response.put("mensaje", "Contraseña actualizada correctamente");
+		response.put("message", "Contraseña actualizada correctamente");
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 
 	}
